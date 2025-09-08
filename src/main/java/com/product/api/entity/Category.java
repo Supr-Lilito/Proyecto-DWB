@@ -132,47 +132,4 @@ public class Category {
         this.status = status;
     }
 
-    /**
-     * Recibe un objeto categoría y lo añade a la lista de categorías.
-     *
-     * @param category la categoría que se añadirá a la lista
-     */
-    public static void createCategory(Category category) {
-    	
-        /* Comprobación de que no se repitan atributos además del estado. */
-        for (Category item : listaCategorias) {
-            
-            if (item.getCategory().equals(category.getCategory())){
-                System.out.println("\n -> Error: Una categoría con ese nombre ya fue registrada. Por favor, vuelve a intentarlo.");
-                break;
-            } else if (item.getCategoryId().equals(category.getCategoryId())) {
-                System.out.println("\n -> Error: Una categoría con ese identificador ya fue registrada. Por favor, vuelve a intentarlo.");
-                break;
-            } else if (item.getTag().equals(category.getTag())) {
-                System.out.println("\n -> Error: Una categoría con esa etiqueta ya fue registrada. Por favor, vuelve a intentarlo.");
-                break;
-            }
-        }
-    	
-        listaCategorias.add(category);
-    }
-
-    /**
-     * Método que cambia el estado de una categoría existente a 0.
-     *
-     * @param category_id el identificador de la categoría a actualizar
-     */
-    public static void deleteCategory(Integer category_id) {
-
-    	for(Category cate : listaCategorias) {
-    		
-    		if(cate.getCategoryId() == category_id) {
-    			cate.setStatus(0);
-    			System.out.println("La categoría fue eliminada con éxito.");
-    		}
-	
-    	}
-    	
-    	System.out.println("No se encontró la categoría.");
-    }
 }
