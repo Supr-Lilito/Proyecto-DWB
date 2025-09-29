@@ -1,5 +1,6 @@
 package com.product.exception;
 
+import java.net.http.HttpHeaders;
 import java.time.LocalDateTime;
 
 import org.springframework.dao.DataAccessException;
@@ -9,9 +10,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
 public class RestExceptionHandler {
+
 	@ExceptionHandler(ApiException.class)
 	protected ResponseEntity<ExceptionResponse> handleApiException(ApiException exception, WebRequest request){
 		ExceptionResponse response = new ExceptionResponse();
@@ -27,7 +33,6 @@ public class RestExceptionHandler {
 	@ExceptionHandler(DBAccessException.class)
 	protected ResponseEntity<ExceptionResponse> handleDBAccessException(DBAccessException exception, WebRequest request){
 
-
 		ExceptionResponse response = new ExceptionResponse();
 		
 		response.setTimestamp(LocalDateTime.now());
@@ -37,6 +42,20 @@ public class RestExceptionHandler {
 		response.setPath(((ServletWebRequest)request).getRequest().getRequestURI().toString());
 		
 		return new ResponseEntity<>(response, response.getError());
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+		ExceptionResponse response = new ExceptionResponse();
+
+		response.setTimestamp(LocalDateTime.now());
+		response.setStatus(HttpStatus.BAD_REQUEST.value());
+		response.setError(HttpStatus.BAD_REQUEST);
+		response.setMessage(ex.getBindingResult().getFieldError().getDefaultMessage());
+		response.setPath(((ServletWebRequest)request).getRequest().getRequestURI().toString());
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 }
