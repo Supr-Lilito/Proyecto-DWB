@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotNull;
 
-public class DtocategoryIn {
+public class DtoCategoryIn {
 
 	@JsonProperty("category")
 	@NotNull(message="La categoría es obligatoria")
@@ -14,11 +14,11 @@ public class DtocategoryIn {
 	@NotNull(message="El tag es obligatorio")
 	private String tag;
 
-	public String getcategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setcategory(String category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 

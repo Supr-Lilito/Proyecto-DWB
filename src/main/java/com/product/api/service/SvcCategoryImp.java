@@ -2,20 +2,18 @@ package com.product.api.service;
 
 import java.util.List;
 
-import javax.swing.plaf.synth.Category;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.product.api.dto.DtoCategoryIn;
 import com.product.api.entity.Category;
 import com.product.api.repository.RepoCategory;
-import com.product.exception.ApiException;
-import com.product.api.dto.DtocategoryIn;
 import com.product.commons.dto.ApiResponse;
+import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
+
 
 @Service
 public class SvcCategoryImp implements SvcCategory{
@@ -49,7 +47,7 @@ public class SvcCategoryImp implements SvcCategory{
 		} catch (DataAccessException e) {
 			if (e.getLocalizedMessage().contains("ux_category"))
 				throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está registrado");
-			if (e.getLocalizedMessage().contains("ux_tag"))
+			else if (e.getLocalizedMessage().contains("ux_tag"))
 				throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está registrado");
 			throw new DBAccessException();
 		}
@@ -97,3 +95,4 @@ public class SvcCategoryImp implements SvcCategory{
 			throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
 	}
 }
+

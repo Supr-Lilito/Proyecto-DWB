@@ -31,8 +31,6 @@ public class Category {
 	@Column(name = "status")
     private Integer status;
     
-    
-    public static List<Category> listaCategorias = new ArrayList<>();
 
 
     public Category() {

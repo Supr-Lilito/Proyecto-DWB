@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-import javax.swing.plaf.synth.category;
-
 import com.product.api.entity.Category;
 import jakarta.transaction.Transactional;
 
@@ -39,7 +37,7 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Transactional
 	@Query(value ="UPDATE category SET status = :status WHERE category_id = :category_id", nativeQuery = true)
-	void updateStatus(@Param("category_id") Integer category_id, @Param("status") Integer status);
+	void setStatus(@Param("category_id") Integer category_id, @Param("status") Integer status);
 	
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Transactional
