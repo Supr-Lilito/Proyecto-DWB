@@ -26,6 +26,7 @@ public class SecurityConfig {
 		.authorizeHttpRequests(
 				auth -> auth
 				.requestMatchers("/error", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/info", "/actuator/health").permitAll()
+				.requestMatchers("/swagger-ui.html").permitAll()
 				.requestMatchers(HttpMethod.GET, "/category").permitAll()
 				.requestMatchers(HttpMethod.POST, "/category").hasAuthority("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/category/{id}").hasAuthority("ADMIN")
