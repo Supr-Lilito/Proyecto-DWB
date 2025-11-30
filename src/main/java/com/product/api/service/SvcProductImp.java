@@ -1,6 +1,7 @@
 package com.product.api.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -145,5 +146,37 @@ public class SvcProductImp implements SvcProduct{
 			throw new DBAccessException(e);
 		}
 	}
+	
+	@Override
+    public ResponseEntity<Product> getProductByGtin(String gtin) {
+        try {
+            Optional<Product> product = repo.findByGtinAndStatus(gtin);
+            if (product.isPresent()) {
+                return new ResponseEntity<>(product.get(), HttpStatus.OK);
+            } else {
+                throw new ApiException(HttpStatus.NOT_FOUND, "El producto con GTIN " + gtin + " no existe o no está activo");
+            }
+        } catch (DataAccessException e) {
+            throw new DBAccessException(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> updateProductStock(String gtin, Integer stock) {
+        try {
+            // Validamos si existe antes de intentar actualizar
+            Optional<Product> product = repo.findByGtinAndStatus(gtin);
+            if (product.isEmpty()) {
+                throw new ApiException(HttpStatus.NOT_FOUND, "El producto con GTIN " + gtin + " no existe");
+            }
+            
+            repo.updateStock(gtin, stock);
+            return new ResponseEntity<>(new ApiResponse("Stock actualizado correctamente"), HttpStatus.OK);
+        } catch (DataAccessException e) {
+            throw new DBAccessException(e);
+        }
+    }
+	
+	
 
 }

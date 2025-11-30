@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.product.api.dto.in.DtoProductIn;
 import com.product.api.dto.out.DtoProductListOut;
 import com.product.api.dto.out.DtoProductOut;
+import com.product.api.entity.Product;
 import com.product.api.service.SvcProduct;
 import com.product.commons.dto.ApiResponse;
 
@@ -66,4 +67,19 @@ public class CtrlProduct {
 	public ResponseEntity<ApiResponse> disableProduct(@PathVariable Integer id) {
 		return svc.disableProduct(id);
 	}
+	
+	
+    @GetMapping("/gtin/{gtin}")
+    public ResponseEntity<Product> getProductByGtin(@PathVariable("gtin") String gtin) {
+        return svc.getProductByGtin(gtin);
+    }
+
+    @PutMapping("/{gtin}/stock/{stock}")
+    public ResponseEntity<ApiResponse> updateProductStock(
+            @PathVariable("gtin") String gtin, 
+            @PathVariable("stock") Integer stock) {
+        return svc.updateProductStock(gtin, stock);
+    }
+	
+	
 }
