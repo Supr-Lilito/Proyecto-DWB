@@ -17,15 +17,19 @@ import com.product.api.entity.ProductImage;
 import com.product.api.service.SvcProductImage;
 import com.product.commons.dto.ApiResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/product")
+@Tag(name = "Product Image", description = "Catálogo de images de products")
 public class CtrlProductImage {
 	
     @Autowired
     SvcProductImage svc;
 
+    @Operation(summary = "Agregar imagen al producto", description = "Sube y asocia una nueva imagen a un producto específico")
     @PostMapping("/{id}/image")
     public ResponseEntity<ApiResponse> createProductImage(
     		@PathVariable("id") Integer productId, 
@@ -33,12 +37,14 @@ public class CtrlProductImage {
         return ResponseEntity.ok(svc.upload(productId, in));
     }
     
+    @Operation(summary = "Consultar imágenes del producto", description = "Obtiene el listado de todas las imágenes asociadas a un producto")
     @GetMapping("/{id}/image")
     public ResponseEntity<List<ProductImage>> getProductImages(
     		@PathVariable("id") Integer productId) {
     	return ResponseEntity.ok(svc.getImages(productId));
     }
     
+    @Operation(summary = "Eliminar imagen del producto", description = "Elimina una imagen específica asociada a un producto")
     @DeleteMapping("/{id}/image/{product-image-id}")
     public ResponseEntity<ApiResponse> deleteProductImage(
     		@PathVariable("id") Integer productId, 

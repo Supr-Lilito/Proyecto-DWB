@@ -26,6 +26,7 @@ public class SecurityConfig {
 		.authorizeHttpRequests(
 				auth -> auth
 				.requestMatchers("/error", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/info", "/actuator/health").permitAll()
+				.requestMatchers("/swagger-ui.html").permitAll()
 				.requestMatchers(HttpMethod.GET, "/category").permitAll()
 				.requestMatchers(HttpMethod.POST, "/category").hasAuthority("ADMIN")
 				.requestMatchers(HttpMethod.PUT, "/category/{id}").hasAuthority("ADMIN")
@@ -40,6 +41,8 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/product/{id}/image").permitAll()
 				.requestMatchers(HttpMethod.POST, "/product/{id}/image").hasAuthority("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/product/{id}/image/{product-image-id}").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/product/gtin/{gtin}").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/product/{gtin}/stock/{stock}").hasAnyAuthority("ADMIN", "CUSTOMER")
 				)
 		.cors(cors -> cors.configurationSource(corsConfig))
 		.httpBasic(Customizer.withDefaults())
